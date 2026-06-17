@@ -111,10 +111,10 @@ while true; do
   if ! pgrep steam > /dev/null; then nohup $STEAM_BIN &> /dev/null; fi
   while ! pgrep steam > /dev/null; do sleep 1; done
   echo -n "Checking if FF7 is installed... "
-  FF7_LIBRARY=$(steam_library "$STEAM_ROOT" 39140)
+  FF7_LIBRARY=$(steam_library "$STEAM_ROOT" 3837340)
   if [ -z "$FF7_LIBRARY" ]; then
     echo -e "\nNot found! Launching Steam to install."
-    nohup $STEAM_BIN steam://install/39140 &> /dev/null &
+    nohup $STEAM_BIN steam://install/3837340 &> /dev/null &
     read -p "Press Enter when FINAL FANTASY VII is done installing."
     killall -9 steam
     while pgrep steam > /dev/null; do sleep 1; done
@@ -130,9 +130,9 @@ done
 
 # Set paths and compat_mounts after libraries have been properly detected
 FF7_DIR="$FF7_LIBRARY/steamapps/common/FINAL FANTASY VII"
-WINEPATH="$FF7_LIBRARY/steamapps/compatdata/39140/pfx"
-[ $IS_STEAMOS = true ] && WINEPATH="${HOME}/.steam/steam/steamapps/compatdata/39140/pfx"
-export STEAM_COMPAT_MOUNTS="$(steam_library "$STEAM_ROOT" 2805730):$(steam_library "$STEAM_ROOT" 1628350):$(steam_library "$STEAM_ROOT" 39140)"
+WINEPATH="$FF7_LIBRARY/steamapps/compatdata/3837340/pfx"
+[ $IS_STEAMOS = true ] && WINEPATH="${HOME}/.steam/steam/steamapps/compatdata/3837340/pfx"
+export STEAM_COMPAT_MOUNTS="$(steam_library "$STEAM_ROOT" 2805730):$(steam_library "$STEAM_ROOT" 1628350):$(steam_library "$STEAM_ROOT" 3837340)"
 
 # Force FF7 under Proton 9
 echo "Rebuilding Final Fantasy VII under Proton 9..."
@@ -141,11 +141,11 @@ while pidof "steam" > /dev/null; do
   sleep 1
 done
 cp $STEAM_ROOT/config/config.vdf $STEAM_ROOT/config/config.vdf.bak
-perl -0777 -i -pe 's/"CompatToolMapping"\n\s+{/"CompatToolMapping"\n\t\t\t\t{\n\t\t\t\t\t"39140"\n\t\t\t\t\t{\n\t\t\t\t\t\t"name"\t\t"proton_9"\n\t\t\t\t\t\t"config"\t\t""\n\t\t\t\t\t\t"priority"\t\t"250"\n\t\t\t\t\t}/gs' \
+perl -0777 -i -pe 's/"CompatToolMapping"\n\s+{/"CompatToolMapping"\n\t\t\t\t{\n\t\t\t\t\t"3837340"\n\t\t\t\t\t{\n\t\t\t\t\t\t"name"\t\t"proton_9"\n\t\t\t\t\t\t"config"\t\t""\n\t\t\t\t\t\t"priority"\t\t"250"\n\t\t\t\t\t}/gs' \
 $STEAM_ROOT/config/config.vdf
-[ "${WINEPATH}" = */compatdata/39140/pfx ] && rm -rf "${WINEPATH%/pfx}"/*
+[ "${WINEPATH}" = */compatdata/3837340/pfx ] && rm -rf "${WINEPATH%/pfx}"/*
 echo "Sign into the Steam account that owns FF7 if prompted."
-nohup $STEAM_BIN steam://rungameid/39140 &> /dev/null &
+nohup $STEAM_BIN steam://rungameid/3837340 &> /dev/null &
 echo "Waiting for Steam... If nothing happens here, launch FF7 via Steam."
 while ! pgrep "FF7_Launcher" > /dev/null; do sleep 1; done
 killall -9 "FF7_Launcher.exe"
@@ -176,7 +176,7 @@ echo
 # Install 7th Heaven using EXE
 echo "Installing 7th Heaven..."
 mkdir -p "${WINEPATH}/drive_c/ProgramData" # fix vcredist install - infirit
-STEAM_COMPAT_APP_ID=39140 STEAM_COMPAT_DATA_PATH="${WINEPATH%/pfx}" \
+STEAM_COMPAT_APP_ID=3837340 STEAM_COMPAT_DATA_PATH="${WINEPATH%/pfx}" \
 STEAM_COMPAT_CLIENT_INSTALL_PATH="$STEAM_ROOT" \
 "$RUNTIME" -- "$PROTON" waitforexitandrun \
 "$SEVENTH_INSTALLER" /VERYSILENT /DIR="Z:$INSTALL_PATH" /LOG="7thHeaven.log" &>> "7thDeck.log"
@@ -231,10 +231,10 @@ if [ $IS_STEAMOS = true ]; then
   echo "Adding controller config..."
   cp -f deps/controller_neptune_gamepad+mouse+click.vdf $STEAM_ROOT/controller_base/templates/controller_neptune_gamepad+mouse+click.vdf
   for CONTROLLERCONFIG in $STEAM_ROOT/steamapps/common/Steam\ Controller\ Configs/*/config/configset_controller_neptune.vdf ; do
-    if grep -q "\"39140\"" "$CONTROLLERCONFIG"; then
-      perl -0777 -i -pe 's/"39140"\n\s+\{\n\s+"template"\s+"controller_neptune_gamepad_fps.vdf"\n\s+\}/"39140"\n\t\{\n\t\t"template"\t\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}\n\t"7th heaven"\n\t\{\n\t\t"template"\t\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}/gs' "$CONTROLLERCONFIG"
+    if grep -q "\"3837340\"" "$CONTROLLERCONFIG"; then
+      perl -0777 -i -pe 's/"3837340"\n\s+\{\n\s+"template"\s+"controller_neptune_gamepad_fps.vdf"\n\s+\}/"3837340"\n\t\{\n\t\t"template"\t\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}\n\t"7th heaven"\n\t\{\n\t\t"template"\t\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}/gs' "$CONTROLLERCONFIG"
     else
-      perl -0777 -i -pe 's/"controller_config"\n\{/"controller_config"\n\{\n\t"39140"\n\t\{\n\t\t"template"\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}\n\t"7th heaven"\n\t\{\n\t\t"template"\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}/' "$CONTROLLERCONFIG"
+      perl -0777 -i -pe 's/"controller_config"\n\{/"controller_config"\n\{\n\t"3837340"\n\t\{\n\t\t"template"\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}\n\t"7th heaven"\n\t\{\n\t\t"template"\t"controller_neptune_gamepad+mouse+click.vdf"\n\t\}/' "$CONTROLLERCONFIG"
     fi
   done
   echo
